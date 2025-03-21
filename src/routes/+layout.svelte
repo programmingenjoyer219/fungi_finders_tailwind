@@ -1,9 +1,20 @@
 <script>
+	import { onNavigate } from '$app/navigation';
+	import { implementThroughViewTransitions } from '$lib';
 	import Footer from '$lib/components/Footer.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import '../app.css';
 
 	let { children } = $props();
+
+	onNavigate(function applyViewTransitions(navigation) {
+		return new Promise(function executor(resolve) {
+			implementThroughViewTransitions(async function resolvePromise() {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <svelte:head>
